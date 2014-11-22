@@ -59,7 +59,7 @@ class Client
 		} else {
 			
 			// no port number specified, so we set the port number to 6789 
-			portID = 6789;
+			portID = ;
 		
 		} // server port
 		
@@ -67,7 +67,7 @@ class Client
 		BufferedReader UserInput = new BufferedReader( new InputStreamReader(System.in));
 		
 		// This is the socket used to connect to the server
-		Socket clientSocket = new Socket("localhost", portID);
+		Socket clientSocket = new Socket("localhost", 6789);
 		
 		// This is the stream used to send data to the server
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
