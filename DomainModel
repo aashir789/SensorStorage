@@ -1,0 +1,6 @@
+Data Generator --(generates data)--> MiddleWare stores data --(changes its format)--> client can search and read though data
+
+
+Adapter Pattern can be used.
+
+Data Object Interface
