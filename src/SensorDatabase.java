@@ -203,24 +203,18 @@ public class SensorDatabase{
      */
     public void nextOccurance(String metric, double value){
 	
-	ArrayList<Time> tempTimeList = null;
-	
-	for(DataObject tempmetric : this.metrics){
-	    if(tempmetric.getName().equals(metric)){
-		tempTimeList = tempmetric.findData(value);
-	    }
-	    
-	    if(tempTimeList != null){
 		
-		System.out.println(tempTimeList.get(tempmetric.nextOccurCount).toString());
+    	for(DataObject tempmetric : this.metrics){
+    		
+    		if(tempmetric.getName().equals(metric)){
+    			tempmetric.nextOccurance(value);
+    			return;
+    		}
 	    }
-
-	    
-	    tempmetric.nextOccurCount++;
-	    
-	    return;
-	}
-    
+    	
+    	// If not returned yet, the metric doesnt exist
+    	
+    	System.out.println("The metric used is not present the Sensor Database");
 
 	
 	
@@ -281,12 +275,12 @@ public class SensorDatabase{
 	    switch(userInput){
 		
 	    case "r":
-		break;
+	    	break;
 	    case"s":
-		break;
+	    	break;
 	    default:
-		System.out.println("Invalid input");
-		break;
+	    	System.out.println("Invalid input");
+	    	break;
 	    }
 	
 	}

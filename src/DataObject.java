@@ -132,6 +132,43 @@ public class DataObject {
 	
     	return this.searchMap.get(value);
     }
+    
+    
+    /*
+     *nextOccurance:  
+     * 
+     */
+    public void nextOccurance(double value){
+    	
+    	ArrayList<Time> tempTimeList = null;
+    	tempTimeList = this.findData(value);
+    	
+    	if(tempTimeList != null){
+    		
+    		if(nextOccurCount<tempTimeList.size()){
+    			
+    			System.out.println(tempTimeList.get(nextOccurCount));
+    	    	this.nextOccurCount++;
+    	    	return;
+
+    		}
+    		else{
+    			
+    			System.out.println("All next occurances shown. Counter reset.");
+    			this.nextOccurCount =0;
+    		}
+    		
+    	}
+    	else{
+    		
+    		System.out.println("Value entered does not exist for metric: "+this.getName());
+    		
+    	} 
+    	
+    	
+    	
+    	
+    }
 
 }
 

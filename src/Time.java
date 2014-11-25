@@ -19,10 +19,38 @@ public class Time {
 
     }
     
+    
+    public int getHours(){
+    	return this.hours;
+    }
+    
+    public int getMinutes(){
+    	return this.minutes;
+    }
+    
+    public int getSeconds(){
+    	return this.seconds;
+    }
+    
+    // Has a bug when the time of the day changes
     public static int getDiff(Time t1, Time t2){
 		
     	
-    	return 0;
+    	
+    	// Local variables
+    	
+    	int totalSecs1 = 0; 
+    	int totalSecs2 = 0;
+    	
+    	// assumes that hour is in 24 hr format 
+    	totalSecs1 = t1.getSeconds() + t1.getMinutes()*60 + t1.getHours()*3600;
+    	totalSecs2 = t2.getSeconds() + t2.getMinutes()*60 + t2.getHours()*3600;
+    	
+    	
+    	
+    	
+    	return totalSecs1-totalSecs2;
+    	
     		
     }
 
