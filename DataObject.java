@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 /*
 DataObject 
 
@@ -14,8 +18,8 @@ public class DataObject {
     
     
     private String name = "genertic data"; // default metric name
-    private Map<double,ArrayList<Time>> searchMap; // map to store data for faster search
-    private ListArray<double> allData; // list to store data for iterating through all data
+    private Map<Double,ArrayList<Time>> searchMap; // map to store data for faster search
+    private ArrayList<Double> allData; // list to store data for iterating through all data
     private String unit = "unit"; // default unit
     private String timeResolution = "1 sec"; // default resolution of time series data stored
     private Time startTime;
@@ -24,8 +28,8 @@ public class DataObject {
 
     public DataObject(String metricName){
 
-	this.searchMap = new Map<double,ArrayList<Time>>();
-	this.allData = new ListArray<double>();
+	this.searchMap = new HashMap<Double,ArrayList<Time>>();
+	this.allData = new ArrayList<Double>();
 	this.name = metricName;
     }
 
@@ -63,7 +67,7 @@ public class DataObject {
 	// Add the new value to seach map
 	tempList = this.searchMap.get(value);
 	
-	if(tempList){
+	if(tempList != null){
 	    // If the value is already in the search map, 
 	    // add the new time to the time list
 	    
@@ -87,6 +91,8 @@ public class DataObject {
 	}
 	
 	this.endTime = currentTime;
+	
+	return true;
 
     }
     
@@ -110,7 +116,7 @@ public class DataObject {
 
 
 	// Iterarte through the list to get the start and end time
-	startIndex = Time.getDiff(metric.startTime,startTime);
+	startIndex = Time.getDiff(this.startTime,startTime);
 	
 
     }
@@ -123,7 +129,7 @@ public class DataObject {
      */
     public ArrayList<Time> findData(double value){
 	
-	return this.seachMap.get(value);
+    	return this.searchMap.get(value);
     }
 
 }

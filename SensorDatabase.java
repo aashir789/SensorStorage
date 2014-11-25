@@ -1,3 +1,8 @@
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+
 /*
 SensorDatabase
 
@@ -22,7 +27,7 @@ correctly.
  */
 
 
-public class SensorReader{
+public class SensorDatabase{
     
 
     // A list of all DataObjects stored by this database
@@ -58,7 +63,7 @@ public class SensorReader{
 	System.out.println("Configuring Sensor Database to support the following metrics: ")
 
 	for(int i =0; i<metrics.size();i++){
-	    System.out.println(metric.get(i).getName());
+	    System.out.println(this.metrics.get(i).getName());
 	    }
 	
 	// Initliaze the socket and open it for reading

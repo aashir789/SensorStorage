@@ -7,7 +7,7 @@ public class Time {
 
     private int hours;
     private int minutes;
-    private int secondss;
+    private int seconds;
 
 
 
@@ -19,6 +19,11 @@ public class Time {
 
     }
     
-    // override equals operator
+    public static int getDiff(Time t1, Time t2){
+		
+    	
+    	return 0;
+    		
+    }
 
 }
