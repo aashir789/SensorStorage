@@ -10,7 +10,7 @@ SensorDatabase
 
 Authors: 
 Name:Aashir Gajjar ID:agajjar
-Name:Nishant Shah ID:
+Name:Nishant Parekh ID:
 
 This program reads incoming data from port 6789
 and stores it such that it is efficient to read 
