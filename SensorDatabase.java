@@ -84,11 +84,7 @@ public class SensorReader{
 	// Closing the socket is a signal to the DataGen server that you don't want any more data.
 	clientSocket.close();
 
-	
 	System.out.println("Data Read.\n\n");
-
-
-	
 
     }
 
@@ -148,6 +144,19 @@ public class SensorReader{
     }
 
 
+
+
+    /*
+      getSummary: this function prints the details about the sensor database 
+      on System.out. Details about metrics stored, unit of all metrics, total 
+      values stored, the start time and the end time of the stored data.
+     */
+    public void getSummary(){
+
+
+    }
+
+
     /*
       firstOccurance: This function finds the first
       occurance of the value of a given metric that is
@@ -177,15 +186,41 @@ public class SensorReader{
 
 
 
+
+
     /*
-      
+      readData: this function ouputs all the data read between the start time 
+      and the end time on System.out. It outputs an error message for invalid 
+      input parameters.This function assumes the 'DataObject' stores data in 
+      sorted order of time
+
      */ 
-    public void readData(){}
+    public void readData(Time startTime, Time endTime, String metricToRead){
+
+
+	for(DataObject metric : this.metrics){
+	
+	    if(currentMetric.getName().equals(metricToRead)){
+		
+		metric.readData(startTime,endTime);		
+		return;
+	    }
+	}
+
+	// If nothing is printed yet, metric parameter is illegal
+
+
+    }
+
+
+
+
 
     
     /*
       Main function to test the methods provided 
-      by the class.
+      by the class. The main function is an example 
+      as to how the API can be used.
      */
     public static void main(String[] args){
 

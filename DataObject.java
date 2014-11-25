@@ -17,7 +17,10 @@ public class DataObject {
     private Map<double,ArrayList<Time>> searchMap; // map to store data for faster search
     private ListArray<double> allData; // list to store data for iterating through all data
     private String unit = "unit"; // default unit
-    private String timeResolution = "1 min"; // default resolution of time series data stored
+    private String timeResolution = "1 sec"; // default resolution of time series data stored
+    private Time startTime;
+    private Time endTime;
+
 
     public DataObject(String metricName){
 
@@ -49,6 +52,8 @@ public class DataObject {
     
     /*
       addData: This function helps in adding the time series data 
+      It is assumed that this function is called in a lood and the 
+      currentTime parameter increases by a constant
      */
     public boolean addData(double value, Time currentTime){
 	
@@ -75,6 +80,14 @@ public class DataObject {
 	// Add the value in the list of all data 
 	this.allData.add(value);
 	
+
+	// Update the start and end time
+	if(this.startTime == null){
+	    this.startTime = currentTime;
+	}
+	
+	this.endTime = currentTime;
+
     }
     
 
@@ -85,7 +98,21 @@ public class DataObject {
      */
     public void readData(Time startTime, Time endTime){
 	
+	// Local variables
+	DataObject currentMetric;
+	int startIndex;
+	int endIndex = Time.getDiff(startTime,endTime);
+
+	// Check for illegal start and end times
+
+
+
+
+
 	// Iterarte through the list to get the start and end time
+	startIndex = Time.getDiff(metric.startTime,startTime);
+	
+
     }
 
     
