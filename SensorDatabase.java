@@ -80,6 +80,15 @@ public class SensorReader{
 	
 	// Read data store it in the custom structure
 	readFromDataGen();
+	
+	// Closing the socket is a signal to the DataGen server that you don't want any more data.
+	clientSocket.close();
+
+	
+	System.out.println("Data Read.\n\n");
+
+
+	
 
     }
 
@@ -94,15 +103,20 @@ public class SensorReader{
      */
     private void readFromDataGen (){
 
-
 	// Parse the currentline and add data in the relevant "DataObject"
 	// of the metrics list
 	
+	System.out.println("Reading data for "+SECONDS_TO_READ+" seconds..");
+
 	// Data loop... 
  		
 	for (int i=0; i<SECONDS_TO_READ; i++){
 	// Here we read the data from the socket...
-	  		
+	    
+	    if(i%5 == 0){
+		System.out.println((SECONDS_TO_READ-i)+" seconds left..");
+	    }
+
 	    Hours = inFromServer.readInt();
 	    Minutes = inFromServer.readInt();
 	    Seconds = inFromServer.readInt();
@@ -131,8 +145,6 @@ public class SensorReader{
 	}
 
 
-
-
     }
 
 
@@ -141,10 +153,15 @@ public class SensorReader{
       occurance of the value of a given metric that is
       read from the 'Data Generator'
      */
-    public void firstOccurance(String metric, double value){
+    public Time firstOccurance(String metric, double value){
 	
+	for(DataObject eachMetric : this.metrics){
+	    if(eachMetric.getName().equals(metric)){
+		return eachMetric.findData(value).get(0);
+	    }
+	}
 	
-
+	return null;
 
     }
     
@@ -172,7 +189,29 @@ public class SensorReader{
      */
     public static void main(String[] args){
 
+	// Local variables
+	String userInput;
+
+	SensorDatabase sdb = new SensorDatabase();
+	sdb.init();
 	
+	while(true){
+
+	    // Wait for user input in order to search,read or quit
+	    System.out.println("Press r to read through collected data\nPress s to search for data\nPress q to quit\n");
+	    	    
+	    switch(userInput){
+		
+	    case "r":
+		break;
+	    case"s":
+		break;
+	    default:
+		System.out.println("Invalid input");
+		break;
+	    }
+	
+	}
 
     }
     
