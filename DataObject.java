@@ -85,6 +85,7 @@ public class DataObject {
      */
     public void readData(Time startTime, Time endTime){
 	
+	// Iterarte through the list to get the start and end time
     }
 
     
