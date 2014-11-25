@@ -24,13 +24,14 @@ public class DataObject {
     private String timeResolution = "1 sec"; // default resolution of time series data stored
     private Time startTime;
     private Time endTime;
-
+    public int nextOccurCount;
 
     public DataObject(String metricName){
 
 	this.searchMap = new HashMap<Double,ArrayList<Time>>();
 	this.allData = new ArrayList<Double>();
 	this.name = metricName;
+	this.nextOccurCount = 0;
     }
 
 

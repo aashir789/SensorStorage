@@ -41,7 +41,7 @@ public class SensorDatabase{
     float	currentTemperature;		// Temperature in Degrees Fahrenheit 	
     float	currentPressure;			// Pressure in Kilo Pascals (kPa)
     int SECONDS_TO_READ = 300; 
-
+    int nextOccurCount;
 
 
 
@@ -53,12 +53,17 @@ public class SensorDatabase{
 	
 	// Local Variables
 	String 	START = "start\n";	// String that signals the DataGen server to begin sending data
+	
+	// Initialize fields
+	nextOccurrCount = 0;
+	
 
 	// Initialize all metrics
 	metrics = new ArrayList<DataObject>();
 	metrics.add(new DataObject("pressure"));
 	metrics.add(new DataObject("temperature"));
 	metrics.add(new DataObject("humidity"));
+	
 	
 	System.out.println("Configuring Sensor Database to support the following metrics: ")
 
@@ -83,7 +88,7 @@ public class SensorDatabase{
 	
 	outToServer.writeBytes(START);		
 	
-	// Read data store it in the custom structure
+	// Read data from socket and store it in the custom structure
 	readFromDataGen();
 	
 	// Closing the socket is a signal to the DataGen server that you don't want any more data.
@@ -184,12 +189,32 @@ public class SensorDatabase{
 
 
     /*
-
+      nextOccurance: this function prints the time when a given 
+      metric value is read. Every time the call is made, the function 
+      returns the next time when the metric value occured, if the 
+      value had occured multiple times.
      */
-    public void nextOccurance(String metric, double value){}
+    public void nextOccurance(String metric, double value){
+	
+	ArrayList<Time> tempTimeList;
+	
+	for(DataObject metric : this.metrics){
+	    if(metric.getName().equals(metric)){
+		tempTimeList = metric.findData(value);
+	    }
+	    
+	    if(tempTimeList != null){
+		
+		System.out.println(tempTimeList.get(metric.nextOccurCount).toString());
+	    }
+
+	}
+    }
+
+	
+	metric.nextOccurCount++;
+    }
     
-
-
 
 
 
