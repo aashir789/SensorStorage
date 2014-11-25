@@ -1,0 +1,39 @@
+/*
+
+
+ */
+
+
+public interface DataObject {
+    
+
+    /*
+      getName: This function returns the name of the 
+      metric that it deals with. eg: pressure, temperature,etc.
+     */
+    public String getName(){}
+
+    
+    /*
+      addData: This function helps in adding the time series data 
+     */
+    public boolean addData(double value, Time currentTime){}
+    
+    
+
+    /*
+      readData: This function displays all data recorded from the 
+      starttime to the endtime
+     */
+    public void readData(Time startTime, Time endTime){}
+
+    
+
+    /*
+      findData: This function searches the stored data for the 
+      value that is passed as a parameter
+     */
+    public ArrayList<Time> findData(double value){}
+
+}
+
