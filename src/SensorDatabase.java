@@ -1,6 +1,8 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 /*
@@ -43,19 +45,24 @@ public class SensorDatabase{
     int SECONDS_TO_READ = 300; 
     int nextOccurCount;
 
+    // This is the stream used to read data from the server for reading data
+ 	DataInputStream inFromServer;
+ 	
+ 	// This is the stream used to send data to the server
+ 	DataOutputStream outToServer;
+ 	
 
 
     /*
       init: This function opens up the socket 
             and initializes 
      */
-    public void init(){
+    public void init() throws UnknownHostException, IOException{
 	
 	// Local Variables
 	String 	START = "start\n";	// String that signals the DataGen server to begin sending data
 	
-	// Initialize fields
-	nextOccurrCount = 0;
+	
 	
 
 	// Initialize all metrics
@@ -65,7 +72,7 @@ public class SensorDatabase{
 	metrics.add(new DataObject("humidity"));
 	
 	
-	System.out.println("Configuring Sensor Database to support the following metrics: ")
+	System.out.println("Configuring Sensor Database to support the following metrics: ");
 
 	for(int i =0; i<metrics.size();i++){
 	    System.out.println(this.metrics.get(i).getName());
@@ -79,10 +86,10 @@ public class SensorDatabase{
 	Socket clientSocket = new Socket("localhost", this.portID);
 	
 	// This is the stream used to read data from the server for reading data
-	DataInputStream inFromServer = new DataInputStream(clientSocket.getInputStream());
+	this.inFromServer = new DataInputStream(clientSocket.getInputStream());
 	
 	// This is the stream used to send data to the server
-	DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
+	this.outToServer = new DataOutputStream(clientSocket.getOutputStream());
 	
 	// Send the start string to the server to begin collecting data...
 	
@@ -107,7 +114,7 @@ public class SensorDatabase{
       and stores data in the custom data structures.
       
      */
-    private void readFromDataGen (){
+    private void readFromDataGen () throws IOException{
 
 	// Parse the currentline and add data in the relevant "DataObject"
 	// of the metrics list
@@ -196,23 +203,27 @@ public class SensorDatabase{
      */
     public void nextOccurance(String metric, double value){
 	
-	ArrayList<Time> tempTimeList;
+	ArrayList<Time> tempTimeList = null;
 	
-	for(DataObject metric : this.metrics){
-	    if(metric.getName().equals(metric)){
-		tempTimeList = metric.findData(value);
+	for(DataObject tempmetric : this.metrics){
+	    if(tempmetric.getName().equals(metric)){
+		tempTimeList = tempmetric.findData(value);
 	    }
 	    
 	    if(tempTimeList != null){
 		
-		System.out.println(tempTimeList.get(metric.nextOccurCount).toString());
+		System.out.println(tempTimeList.get(tempmetric.nextOccurCount).toString());
 	    }
 
+	    
+	    tempmetric.nextOccurCount++;
+	    
+	    return;
 	}
-    }
+    
 
 	
-	metric.nextOccurCount++;
+	
     }
     
 
@@ -230,7 +241,7 @@ public class SensorDatabase{
 
 	for(DataObject metric : this.metrics){
 	
-	    if(currentMetric.getName().equals(metricToRead)){
+	    if(metric.getName().equals(metricToRead)){
 		
 		metric.readData(startTime,endTime);		
 		return;
@@ -252,16 +263,18 @@ public class SensorDatabase{
       by the class. The main function is an example 
       as to how the API can be used.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws UnknownHostException, IOException{
 
 	// Local variables
-	String userInput;
+    String userInput = null;
 
 	SensorDatabase sdb = new SensorDatabase();
 	sdb.init();
 	
 	while(true){
 
+		
+		
 	    // Wait for user input in order to search,read or quit
 	    System.out.println("Press r to read through collected data\nPress s to search for data\nPress q to quit\n");
 	    	    
