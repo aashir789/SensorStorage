@@ -1,6 +1,8 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
 
 /*
 DataObject 
@@ -17,11 +19,11 @@ and can have more features like unit conversion, etc.
 public class DataObject {
     
     
-    private String name = "genertic data"; // default metric name
+    private String name = "genertic data"; 		   // default metric name
     private Map<Double,ArrayList<Time>> searchMap; // map to store data for faster search
-    private ArrayList<Double> allData; // list to store data for iterating through all data
-    private String unit = "unit"; // default unit
-    private String timeResolution = "1 sec"; // default resolution of time series data stored
+    private ArrayList<Double> allData; 			   // list to store data for iterating through all data
+    private String unit = "unit"; 				   // default unit
+    private String timeResolution = "1 sec"; 	   // default resolution of time series data stored
     private Time startTime;
     private Time endTime;
     public int nextOccurCount;
@@ -133,6 +135,7 @@ public class DataObject {
     	return this.searchMap.get(value);
     }
     
+
     
     /*
      *nextOccurance:  
@@ -166,8 +169,28 @@ public class DataObject {
     	} 
     	
     	
+    }
     	
     	
+    	
+    	
+    /*
+     * Read Data for display
+     * 
+     * */
+    public String readAndDisplayData(Time startTime, String Metrics){
+    	String values[]= Metrics.split(",");
+    	for(DataObject obj:SensorDatabase.metrics){
+    		if(Arrays.asList(values).contains(obj.getName())){
+    			
+    			
+    			
+    			
+    		}
+    		
+    	}
+    	
+    	return "";
     }
 
 }

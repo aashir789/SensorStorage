@@ -33,7 +33,7 @@ public class SensorDatabase{
     
 
     // A list of all DataObjects stored by this database
-    private ArrayList<DataObject> metrics;
+    static ArrayList<DataObject> metrics;
     private Integer portID = 6789;
     
     int 	Hours;				// Data sample time stamp hours
