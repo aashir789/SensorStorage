@@ -8,7 +8,7 @@ import java.util.Scanner;
 /*
 DataObject 
 
-Authors:
+Authors:	
 
 This class is an generic class which can be inherited
 by special classes which represent specific data metrics
@@ -175,7 +175,6 @@ public class DataObject {
     	
     	
     	
-    	
     /*
      * Read Data for display
      * 
@@ -197,10 +196,14 @@ public class DataObject {
 	public void ReadData(Time startTime,Time endTime,String Metrics){
     	
     	long FirstIndex=0,LastIndex=0;
-    if(TimeSub(startTime,endTime)>=10){
-		System.out.println("Data Cannot be displayed at once will be displayed in groups of 10 seconds");
-	}
-    
+    	int size=0;
+    	if(TimeSub(endTime,startTime)>(long)10){
+    		System.out.println("Data Cannot be displayed at once will be displayed in groups of 10 seconds");
+    		size=SizeOfDisplayBuffer;
+    	}
+    	else{
+    		size=(int)TimeSub(endTime,startTime);
+    }   
     	Time samplingStartTime=SensorDatabase.metrics.get(0).startTime;
     	Time samplingEndTime=TimeAdd(samplingStartTime,300);
     		if(compareTimes(startTime,samplingStartTime) && compareTimes(endTime,samplingStartTime))
@@ -208,7 +211,7 @@ public class DataObject {
     				 FirstIndex = TimeSub(startTime,samplingStartTime);
     			}
     		LastIndex=FirstIndex+SizeOfDisplayBuffer;
-    		DisplayData(FirstIndex,SizeOfDisplayBuffer,Metrics,startTime);
+    		DisplayData(FirstIndex,size,Metrics,startTime,endTime);
     }
     
     /*
@@ -216,7 +219,7 @@ public class DataObject {
      * 
      * */
     
-    public void DisplayData(long startIndex,int SizeOfDisplayBuffer, String Metrics,Time StartTime){
+    public void DisplayData(long startIndex,int SizeOfDisplayBuffer, String Metrics,Time StartTime,Time endTime){
     	SensorDatabase sd=new SensorDatabase();
     	double val=0;
     	
@@ -235,7 +238,7 @@ public class DataObject {
     		for(int cntr=0;cntr<SizeOfDisplayBuffer;cntr++){
 
 				StartTime=TimeAdd(StartTime,1);
-				output+=StartTime.getHours()+":"+StartTime.getMinutes()+":"+StartTime.getSeconds()+"\t";
+				output+=TimetoString(StartTime)+"\t";
 				
     			for(DataObject obj:SensorDatabase.metrics){
 
@@ -250,8 +253,27 @@ public class DataObject {
     		}
     		
     		System.out.println(output);
-    }
+    		
+    		Boolean repeat=true;
+    		while(repeat==true)
+    		repeat=false;
+    		System.out.println("Press n for next set of values or p for previous set");
+    		Scanner inp=new Scanner(System.in);
+    		String choice=inp.nextLine();
+    		
+    		switch(choice){
+    		
+    		case "n":
+    		ReadData(StartTime,endTime,Metrics);	
+    		break;	
 
+    		default :
+    			return;
+    		}
+    		
+   }
+
+    
     
     
     private long getsecondsfromTime(Time time1){
@@ -260,6 +282,8 @@ public class DataObject {
     	return seconds;
     }
     /*  Compares two Time values. If greater then return true else return false */
+    
+    
     
     private boolean compareTimes(Time time1,Time time2){
     
@@ -275,6 +299,8 @@ public class DataObject {
     	}
     }
 
+    
+    
 	private long TimeSub(Time time1, Time time2) {
 		// TODO Auto-generated method stub
 		
@@ -285,6 +311,8 @@ public class DataObject {
 		return (time1secs-time2secs);
 	}
 	
+	
+	
 	private Time TimeAdd(Time time1, long seconds) {
 		// TODO Auto-generated method stub
 		
@@ -293,6 +321,8 @@ public class DataObject {
 		
 		return ConvertSecstoTime(time1secs);
 	}
+	
+	
 	
 	private Time ConvertSecstoTime(long seconds){
 		int hours=0,mins=0,secs=0;
@@ -307,6 +337,8 @@ public class DataObject {
 		
 	}
 	
+	
+	
 	private Time StringToTime(String Time) {
 		// TODO Auto-generated method stub
 		String values[]=Time.split(":");
@@ -315,6 +347,30 @@ public class DataObject {
 		int seconds=Integer.parseInt(values[2]);
 		Time time=new Time(hours,mins,seconds);
 		return time;
+	}
+	
+	
+	
+	private String TimetoString(Time time) {
+		// TODO Auto-generated method stub
+		String output="";
+		time.getHours();
+		if(time.getHours()<10)
+		output+="0"+time.getHours()+":";
+		else
+		output+=time.getHours()+":";
+		
+		if(time.getMinutes()<10)
+		output+="0"+time.getMinutes()+":";
+		else
+		output+=time.getMinutes()+":";
+		
+		if(time.getMinutes()<10)
+		output+="0"+time.getSeconds();
+		else
+		output+=time.getSeconds();
+		
+		return output;
 	}
 
 
