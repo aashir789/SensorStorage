@@ -1,16 +1,18 @@
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /*
 SensorDatabase
 
 Authors: 
 Name:Aashir Gajjar ID:agajjar
-Name:Nishant Parekh ID:
+Name:Nishant Parekh ID:nmparekh
 
 This program reads incoming data from port 6789
 and stores it such that it is efficient to read 
@@ -247,36 +249,35 @@ public class SensorDatabase{
 
     }
 
-
-
-
-
     
     /*
       Main function to test the methods provided 
       by the class. The main function is an example 
       as to how the API can be used.
      */
+    
     public static void main(String[] args) throws UnknownHostException, IOException{
 
 	// Local variables
+    
     String userInput = null;
-
 	SensorDatabase sdb = new SensorDatabase();
 	sdb.init();
+	Scanner input = new Scanner( System.in );
 	
-	while(true){
-
-		
-		
+	
+	while(true){	
 	    // Wait for user input in order to search,read or quit
 	    System.out.println("Press r to read through collected data\nPress s to search for data\nPress q to quit\n");
-	    	    
+	    userInput=input.nextLine();
 	    switch(userInput){
-		
+	
 	    case "r":
+	    	DataObject dobj= new DataObject("new");
+	    	dobj.InitiateRead();
 	    	break;
 	    case"s":
+	    	
 	    	break;
 	    default:
 	    	System.out.println("Invalid input");
