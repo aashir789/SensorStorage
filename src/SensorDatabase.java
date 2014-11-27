@@ -35,7 +35,7 @@ public class SensorDatabase{
     
 
     // A list of all DataObjects stored by this database
-    static ArrayList<DataObject> metrics;
+    private ArrayList<DataObject> metrics;
     private Integer portID = 6789;
     
     int 	Hours;				// Data sample time stamp hours
@@ -44,7 +44,7 @@ public class SensorDatabase{
     float	currentHumidity;			// Relative Humidity
     float	currentTemperature;		// Temperature in Degrees Fahrenheit 	
     float	currentPressure;			// Pressure in Kilo Pascals (kPa)
-    int SECONDS_TO_READ = 300; 
+    int SECONDS_TO_READ = 10; 
     int nextOccurCount;
 
     // This is the stream used to read data from the server for reading data
@@ -82,7 +82,7 @@ public class SensorDatabase{
 	
 	// Initliaze the socket and open it for reading
 	
-	System.out.println("Reading data from port "+this.portID);
+	System.out.println("\nReading data from port "+this.portID);
 
 	// This is the socket used to connect to the server
 	Socket clientSocket = new Socket("localhost", this.portID);
@@ -128,9 +128,7 @@ public class SensorDatabase{
 	for (int i=0; i<SECONDS_TO_READ; i++){
 	// Here we read the data from the socket...
 	    
-	    if(i%5 == 0){
-		System.out.println((SECONDS_TO_READ-i)+" seconds left..");
-	    }
+	    
 
 	    Hours = inFromServer.readInt();
 	    Minutes = inFromServer.readInt();
@@ -143,6 +141,14 @@ public class SensorDatabase{
 	    Time currentTime = new Time(Hours,Minutes,Seconds);
 
 	    // Check the time taken to add data
+	    
+	    if(i%5 == 0){
+			System.out.println((SECONDS_TO_READ-i)+" seconds left..\n"
+					+ "Current time: "+currentTime.toString());
+			
+		    }
+	    
+	    
 	    
 	    for(DataObject metric : this.metrics){
 		
@@ -261,6 +267,16 @@ public class SensorDatabase{
 	// Local variables
     
     String userInput = null;
+    String metricinput = null;
+    String starttime = null;
+    String[] starttimeSeperated = null;
+    String endtime = null;
+    String[] endtimeSeperated = null;
+    
+    Time startTime= null;
+    Time endTime= null;
+    
+    
 	SensorDatabase sdb = new SensorDatabase();
 	sdb.init();
 	Scanner input = new Scanner( System.in );
@@ -273,8 +289,23 @@ public class SensorDatabase{
 	    switch(userInput){
 	
 	    case "r":
-	    	DataObject dobj= new DataObject("new");
-	    	dobj.InitiateRead();
+	    	System.out.println("Enter metric to read");
+	    	metricinput = input.nextLine();
+	    	System.out.println("Enter start time in hrs:min:secs");
+	    	starttime  = input.nextLine();
+	    	System.out.println("Enter end time in hrs:min:secs");
+	    	endtime = input.nextLine();
+	    	
+	    	starttimeSeperated = starttime.split(":"); 
+	    	endtimeSeperated = endtime.split(":");
+	    			
+	    			
+	    	startTime = new Time(Integer.parseInt(starttimeSeperated[0]),Integer.parseInt(starttimeSeperated[1]),Integer.parseInt(starttimeSeperated[2]));
+	    	endTime = new Time(Integer.parseInt(starttimeSeperated[0]),Integer.parseInt(endtimeSeperated[1]),Integer.parseInt(endtimeSeperated[2]));
+	    	sdb.readData(startTime, endTime, metricinput);	
+	    		
+	    	
+	    	
 	    	break;
 	    case"s":
 	    	
