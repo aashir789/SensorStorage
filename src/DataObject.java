@@ -145,8 +145,8 @@ public class DataObject {
 		}
 
 		// Iterarte through the list to get the start and end time
-		startIndex = Time.getDiff(this.startTime, readstartTime);
-		endIndex = Time.getDiff(this.startTime,readendTime );
+		startIndex = Time.getDiff(readstartTime,this.startTime );
+		endIndex = Time.getDiff(readendTime,this.startTime );
 		
 		fillBuffer(startIndex,endIndex);
 		
