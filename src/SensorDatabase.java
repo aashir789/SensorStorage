@@ -268,6 +268,7 @@ public class SensorDatabase{
     
     String userInput = null;
     String metricinput = null;
+    String metricvalue = null;
     String starttime = null;
     String[] starttimeSeperated = null;
     String endtime = null;
@@ -284,7 +285,7 @@ public class SensorDatabase{
 	
 	while(true){	
 	    // Wait for user input in order to search,read or quit
-	    System.out.println("Press r to read through collected data\nPress s to search for data\nPress q to quit\n");
+	    System.out.println("\nPress r to read through collected data\nPress s to search for data\nPress q to quit\n");
 	    userInput=input.nextLine();
 	    switch(userInput){
 	
@@ -308,6 +309,17 @@ public class SensorDatabase{
 	    	
 	    	break;
 	    case"s":
+	    	
+	    	System.out.println("Enter metric to search");
+	    	metricinput = input.nextLine();
+	    	System.out.println("Enter value of metric to search");
+	    	metricvalue  = input.nextLine();
+	    	
+	    	Time firstOccur = sdb.firstOccurance(metricinput, Double.parseDouble(metricvalue));
+	    	
+	    	System.out.println("Time of first occuance of value "+metricvalue
+	    					+" for metric "+metricinput+" :\n"+firstOccur.toString() );
+	    	
 	    	
 	    	break;
 	    default:
