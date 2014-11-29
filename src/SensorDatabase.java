@@ -44,7 +44,7 @@ public class SensorDatabase{
     float	currentHumidity;			// Relative Humidity
     float	currentTemperature;		// Temperature in Degrees Fahrenheit 	
     float	currentPressure;			// Pressure in Kilo Pascals (kPa)
-    int SECONDS_TO_READ = 10; 
+    int SECONDS_TO_READ = 300; 
     int nextOccurCount;
 
     // This is the stream used to read data from the server for reading data
@@ -70,9 +70,13 @@ public class SensorDatabase{
 	// Initialize all metrics
 	metrics = new ArrayList<DataObject>();
 	metrics.add(new DataObject("pressure"));
-	metrics.add(new DataObject("temperature"));
-	metrics.add(new DataObject("humidity"));
+	metrics.get(0).setUnit("kPa");
 	
+	metrics.add(new DataObject("temperature"));
+	metrics.get(1).setUnit("F");
+	
+	metrics.add(new DataObject("humidity"));
+
 	
 	System.out.println("Configuring Sensor Database to support the following metrics: ");
 
@@ -143,7 +147,7 @@ public class SensorDatabase{
 	    // Check the time taken to add data
 	    
 	    if(i%5 == 0){
-			System.out.println((SECONDS_TO_READ-i)+" seconds left..\n"
+			System.out.println((SECONDS_TO_READ-i)+" seconds left.. "
 					+ "Current time: "+currentTime.toString());
 			
 		    }
@@ -177,8 +181,58 @@ public class SensorDatabase{
       values stored, the start time and the end time of the stored data.
      */
     public void getSummary(){
-
-
+    	
+    	
+    	// Total data is:
+    	// No of entries ie no of seconds * total metrics *2
+    	// 2 is multiplied because data is stored in a map & a list for each metric
+    	
+    	int totalData = SECONDS_TO_READ*this.metrics.size()*2;
+    	double dataBytes = totalData*8;
+    	
+    	// Time(object) is also stored in the map of each metric 
+    	int totalTimeData = SECONDS_TO_READ*this.metrics.size();
+    	
+    	// Time object contains 3 ints(4 bytes) and one reference (8 bytes)
+    	double timeBytes = totalTimeData*(8+(3*4));
+    	
+    	
+    	
+    	
+    	System.out.println("====================================");
+    	System.out.println("Summary of data collected:");
+    	
+    	System.out.println("Data worth "+SECONDS_TO_READ+ " seconds collected");
+    	
+    	
+    	System.out.println("Time span of Data Collected:");
+    	for(int i=0; i<this.metrics.size();i++){
+    		System.out.println(this.metrics.get(i).getName()+": "+this.metrics.get(i).getStartTime() 
+    						+ " - "+ this.metrics.get(i).getEndTime() );	
+    	}
+    	
+    	
+    	System.out.println("Types of measurements/metrics stored: \n");
+    	for(int i =0; i<metrics.size();i++){
+    	    System.out.println(this.metrics.get(i).getName() + " ("+this.metrics.get(i).getUnit()+")");
+    	}
+    	
+    	
+    	System.out.println("Size of data collected:");
+    	System.out.println(timeBytes+dataBytes+" bytes");
+    	
+    	
+    	System.out.println("Range of Data Collected:");
+    	for(int i=0; i<this.metrics.size();i++){
+    		System.out.println(this.metrics.get(i).getName()+": "+this.metrics.get(i).getMax() 
+    						+ " - "+ this.metrics.get(i).getMin() + this.metrics.get(i).getUnit());	
+    	}
+    	
+    	
+    	
+    	
+    	System.out.println("====================================");
+    	
     }
 
 
@@ -191,7 +245,15 @@ public class SensorDatabase{
 	
 	for(DataObject eachMetric : this.metrics){
 	    if(eachMetric.getName().equals(metric)){
-		return eachMetric.findData(value).get(0);
+		
+	    	ArrayList<Time> tempTimeList;
+	    	
+	    	if( (tempTimeList = eachMetric.findData(value) )!= null){
+	    		
+	    		return tempTimeList.get(0);
+	    	}
+	    	
+	    	return null;
 	    }
 	}
 	
@@ -209,22 +271,22 @@ public class SensorDatabase{
       returns the next time when the metric value occured, if the 
       value had occured multiple times.
      */
-    public void nextOccurance(String metric, double value){
+    public boolean nextOccurance(String metric, double value){
 	
 		
     	for(DataObject tempmetric : this.metrics){
     		
     		if(tempmetric.getName().equals(metric)){
     			tempmetric.nextOccurance(value);
-    			return;
+    			return true;
     		}
 	    }
     	
     	// If not returned yet, the metric doesnt exist
     	
     	System.out.println("The metric used is not present the Sensor Database");
-
-	
+    	
+    	return false;
 	
     }
     
@@ -285,8 +347,11 @@ public class SensorDatabase{
 	
 	while(true){	
 	    // Wait for user input in order to search,read or quit
-	    System.out.println("\nPress r to read through collected data\nPress s to search for data\nPress q to quit\n");
-	    userInput=input.nextLine();
+		System.out.println("============================================================");
+		System.out.println("\nPress r to read through collected data\nPress s to search for data\nPress q to quit\n");
+		System.out.println("============================================================");
+		
+		userInput=input.nextLine();
 	    switch(userInput){
 	
 	    case "r":
@@ -317,8 +382,39 @@ public class SensorDatabase{
 	    	
 	    	Time firstOccur = sdb.firstOccurance(metricinput, Double.parseDouble(metricvalue));
 	    	
-	    	System.out.println("Time of first occuance of value "+metricvalue
+	    	if(firstOccur!= null){
+	    	
+	    		System.out.println("Time of first occuance of value "+metricvalue
 	    					+" for metric "+metricinput+" :\n"+firstOccur.toString() );
+	    	}
+	    	
+	    	else {
+	    		
+	    		System.out.println("The value entered is not present")	;
+	    		break;
+	    	}
+	    	
+	    	
+	    	// First occurrence already returned
+	    
+	    	while(true){
+	    	
+	    	System.out.println("Press n to get the next occurance");
+	    	
+	    	if(input.nextLine().equals("n")){
+	    		
+	    		sdb.nextOccurance(metricinput, Double.parseDouble(metricvalue));
+	    		
+	    	}
+	    	else{
+	    		
+	    		System.out.println("Invalid input");
+	    		break;
+	    	}
+	    	
+	    	
+	    	}
+	    	
 	    	
 	    	
 	    	break;

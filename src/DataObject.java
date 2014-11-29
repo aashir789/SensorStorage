@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public class DataObject {
 	private List<Double> displayBuffer;
 	
 	
-	private String unit = "unit"; // default unit
+	private String unit = " "; // default unit
 	private String timeResolution = "1 sec"; // default resolution of time
 												// series data stored
 	private Time startTime;
@@ -71,6 +72,10 @@ public class DataObject {
 		// Local variables
 		ArrayList<Time> tempList;
 
+		// Rpund up decimal value up to 2 digits for searching
+		value = (double) Math.round(value * 100) / 100;
+		
+		
 		// Add the new value to seach map
 		tempList = this.searchMap.get(value);
 
@@ -234,17 +239,38 @@ public class DataObject {
 	}
 
 	
+	/*
+	 * getMax - this function returns the max value stored in allData 
+	 */
+	
+	public double getMax(){
+		
+		return Collections.max(allData);
+		
+	}
+	
+	/*
+	 * getMin - this function returns the min value stored in allData 
+	 */
+	public double getMin(){
+		
+		
+		return Collections.min(allData);
+	}
 	
 	
+	public Time getStartTime(){
+		
+		return this.startTime;
+		
+	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
+	public Time getEndTime(){
+		
+		return this.endTime;
+		
+	}
 	
 	
 	/*
