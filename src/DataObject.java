@@ -1,3 +1,19 @@
+/*
+ DataObject
+
+ Authors: 
+ Name:Aashir Gajjar ID:agajjar
+ Name:Nishant Parekh ID:nmparekh
+
+ This class is an generic class which stores information 
+ about an individual metric. This class provides an interaface 
+ for adding and searching data. 
+  
+ 
+ */
+
+
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -6,16 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/*
- DataObject 
-
- Authors:	
-
- This class is an generic class which can be inherited
- by special classes which represent specific data metrics
- and can have more features like unit conversion, etc. 
-
- */
 
 public class DataObject {
 
@@ -273,104 +279,6 @@ public class DataObject {
 	}
 	
 	
-	/*
-	 * Read Data for display
-	 */
-	// public void InitiateRead(){
-	//
-	// Scanner inp=new Scanner(System.in);
-	// System.out.println("Please Enter Time From when data is to read. Please Follow(hh:mm:ss)");
-	// String StartTime=inp.nextLine();
-	// Time startTime=StringToTime(StartTime);
-	// System.out.println("Please Enter Time till data is to be read. Please Follow(hh:mm:ss)");
-	// String EndTime=inp.nextLine();
-	// Time endTime=StringToTime(EndTime);
-	// System.out.println("Please Enter Metrics to be considered for display seperated by commas(For eg: temperature,pressure,humidity)");
-	// String Metrics=inp.nextLine();
-	// ReadData(startTime,endTime,Metrics);
-	// }
-	//
-	// public void ReadData(Time startTime,Time endTime,String Metrics){
-	//
-	// long FirstIndex=0,LastIndex=0;
-	// int size=0;
-	// if(TimeSub(endTime,startTime)>(long)10){
-	// System.out.println("Data Cannot be displayed at once will be displayed in groups of 10 seconds");
-	// size=SizeOfDisplayBuffer;
-	// }
-	// else{
-	// size=(int)TimeSub(endTime,startTime);
-	// }
-	// Time samplingStartTime=SensorDatabase.metrics.get(0).startTime;
-	// Time samplingEndTime=TimeAdd(samplingStartTime,300);
-	// if(compareTimes(startTime,samplingStartTime) &&
-	// compareTimes(endTime,samplingStartTime))
-	// if(compareTimes(samplingEndTime,startTime) &&
-	// compareTimes(samplingEndTime,endTime)){
-	// FirstIndex = TimeSub(startTime,samplingStartTime);
-	// }
-	// LastIndex=FirstIndex+SizeOfDisplayBuffer;
-	// DisplayData(FirstIndex,size,Metrics,startTime,endTime);
-	// }
-
-	/*
-	 * Display Data that is read in parts of 10 seconds.
-	 */
-
-	// public void DisplayData(long startIndex,int SizeOfDisplayBuffer, String
-	// Metrics,Time StartTime,Time endTime){
-	// SensorDatabase sd=new SensorDatabase();
-	// double val=0;
-	//
-	// String output="";
-	//
-	// String values[]= Metrics.split(",");
-	// output+="Time \t";
-	//
-	// for(DataObject obj:SensorDatabase.metrics){
-	// if(Arrays.asList(values).contains(obj.getName()))
-	// output+=obj.getName()+"\t";
-	// }
-	//
-	// output+="\n";
-	//
-	// for(int cntr=0;cntr<SizeOfDisplayBuffer;cntr++){
-	//
-	// StartTime=TimeAdd(StartTime,1);
-	// output+=TimetoString(StartTime)+"\t";
-	//
-	// for(DataObject obj:SensorDatabase.metrics){
-	//
-	// if(Arrays.asList(values).contains(obj.getName())){
-	// val=(obj.allData.get((int)(startIndex+cntr)));
-	// val = (double) Math.round(val * 10000) / 10000;
-	// output+=val+"\t";
-	// }
-	// }
-	// output+="\n";
-	//
-	// }
-	//
-	// System.out.println(output);
-	//
-	// Boolean repeat=true;
-	// while(repeat==true)
-	// repeat=false;
-	// System.out.println("Press n for next set of values or p for previous set");
-	// Scanner inp=new Scanner(System.in);
-	// String choice=inp.nextLine();
-	//
-	// switch(choice){
-	//
-	// case "n":
-	// ReadData(StartTime,endTime,Metrics);
-	// break;
-	//
-	// default :
-	// return;
-	// }
-	//
-	// }
 
 	private long getsecondsfromTime(Time time1) {
 		long seconds = 0;

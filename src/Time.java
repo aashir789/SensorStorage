@@ -1,7 +1,17 @@
 /*
+ Time
+
+ Authors: 
+ Name:Aashir Gajjar ID:agajjar
+ Name:Nishant Parekh ID:nmparekh
+
+ This class stores time information in hours
+ minutes and seconds. The information is stored in 
+ the 24 hour time format  
+ 
+
 
  */
-
 
 public class Time {
 
@@ -35,8 +45,6 @@ public class Time {
     // Has a bug when the time of the day changes
     public static int getDiff(Time t1, Time t2){
 		
-    	
-    	
     	// Local variables
     	
     	int totalSecs1 = 0; 
@@ -45,9 +53,6 @@ public class Time {
     	// assumes that hour is in 24 hr format 
     	totalSecs1 = t1.getSeconds() + t1.getMinutes()*60 + t1.getHours()*3600;
     	totalSecs2 = t2.getSeconds() + t2.getMinutes()*60 + t2.getHours()*3600;
-    	
-    	
-    	
     	
     	return totalSecs1-totalSecs2;
     	
